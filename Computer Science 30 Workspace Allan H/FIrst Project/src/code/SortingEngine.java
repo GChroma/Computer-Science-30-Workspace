@@ -158,28 +158,35 @@ public class SortingEngine {
 	static int[] insertionSort(int[] array) {
 		
 		int[] copy = new int[array.length];
-		array[0] = copy[0];//initialize copy[0]
+		copy[0] = array[0];//initialize copy[0]
+		//System.out.println(copy[0]);(debug)
 		
 		for(int i = 1; i < array.length; i++) {
-			for(int j = i - 1; j > -1; j--) {//look at second array and travel down from one spot behind. Put it above the checked.
-				if(array[i] > copy[j]) {
-					swapUp(copy, j + 1, i);//top not included
-					copy[j + 1] = array[i];
+			for(int j = i; j > -1; j--) {//look at second array and travel down from one spot behind. Put it above the checked.
+				
+				if(j == 0) {
+					if(array[i] <= copy[j]) {//at the first spot in copy, smallest number must be checked.
+						swapUp(copy, j, i);
+						copy[j] = array[i];
+						//System.out.println("smallest: " + copy[j]);(debugging)
+						break;
+					}
+				}
+				
+				if(array[i] >= copy[j - 1]) {//if >= it makes it stable?
+					swapUp(copy, j, i);//top not included
+					copy[j] = array[i];
 					break;
 				}
 				
-				if(j == 0) {
-					if(array[i] < copy[j]) {//at the first spot in copy, smallest number must be checked.
-						swapUp(copy, j, i);
-						copy[j] = array[i];
-					}
-				}
+				
+				
 			}
 		}
 		return copy;
 	}
 	
-	static void swapUp(int[] array, int bottom, int top) {//bottom is included in the swap up. Top is replaced (must have 1 index above top)
+	static void swapUp(int[] array, int bottom, int top) {//bottom is included in the swap up. Top is replaced
 		
 		for(int i = top; i > bottom; i--) {
 			array[i] = array[i - 1]; 
@@ -254,12 +261,12 @@ public class SortingEngine {
 		int leftHalf = 0;
 		int rightHalf = 0;
 		if(right.length > 0 && left.length > 0) {
-			System.out.println("Left: ");
+			/*System.out.println("Left: ");
 			print(left);
 			System.out.println(" ");
 			System.out.println("Right: ");
 			print(right);
-			System.out.println(" "); 
+			System.out.println(" "); */
 			//For Debugging
 			while(sortCounter < current.length) {//combine both halves
 				/*if(right[rightHalf] == 1000 && left[leftHalf] == 1000) {
@@ -289,14 +296,14 @@ public class SortingEngine {
 		
 			
 		}else {
-			System.out.println("Reached bottom " + array[bottom]);// For debugging
+			//System.out.println("Reached bottom " + array[bottom]);// For debugging
 			current[sortCounter] = array[bottom];
 		}
 		
 		
-		System.out.println("current: ");
+		/*System.out.println("current: ");
 		print(current);
-		System.out.println(" ");
+		System.out.println(" ");*/
 		//For Debugging.
 		return current;
 	}
