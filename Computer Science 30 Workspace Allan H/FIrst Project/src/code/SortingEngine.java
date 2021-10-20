@@ -242,7 +242,7 @@ public class SortingEngine {
 		
 	}
 	
-	static int[] mergeSort(int[] array, int bottom, int top) {
+	static int[] mergeSort(int[] array, int bottom, int top) {//not as efficient as the answer on the table.
 		
 		int midpoint = (top+bottom)/2;
 		int[] left = new int[0];
@@ -308,52 +308,49 @@ public class SortingEngine {
 		return current;
 	}
 	
-/*static void mergeSortBetter(int[] array, int bottom, int top) { Working on coding a better version of mergeSort.
-		
-		int midpoint = (top+bottom)/2;
-		boolean smallest = false;
-		int[] temp = new int[array.length];
-		
-		if(top-bottom >= 1) {//the array that was split is still greater than or equal to 2 indices
-			mergeSort(array, bottom, midpoint);//bottom and top are included
+	static void quickSort(int[] array, int bottom, int top) {
 			
-			mergeSort(array, midpoint + 1, top);
-			smallest = true;
-		}
+		int BPivot = bottom;
+		int TPivot = top;
+		int temp;
 		
-		int sortCounter = 0;
-		int leftHalf = 0;
-		int rightHalf = 0;
-		
-		if(!smallest) {
-			while(sortCounter < (top-bottom)) {//combine both halves
-				
-			if(array[leftHalf + bottom] <= array[rightHalf + midpoint]) {
-				//System.out.println("Combining " + left[leftHalf]);
-				temp[sortCounter] = array[leftHalf + bottom];
-				if(leftHalf < (midpoint-bottom)) {
-					leftHalf++;
-				}
-				
-				sortCounter++;
-			}else {
-				//System.out.println("Combining " + right[rightHalf]);
-				temp[sortCounter] = array[rightHalf + midpoint];
-				if(rightHalf < (top - midpoint)) {
-					rightHalf++;
-					}
-				sortCounter++;
-				}
-			}	
-		}else {
-			System.out.println("Reached bottom " + array[bottom]);// For debugging
-		}
-		
-		for(int i = 0; i < top-bottom; i++) {
+		while(BPivot != TPivot) {
+			while(array[TPivot] >= array[BPivot] && TPivot != BPivot) {
+				TPivot--;
+				/*if(TPivot == BPivot)
+					break;*/
+			}
+			temp = array[TPivot];//swap top and bottom pivots
+			array[TPivot] = array[BPivot];
+			array[BPivot] = temp;
+			
+			//System.out.println("Top move: Top " + TPivot + ":" + array[TPivot] + " Bottom " + BPivot + ":" + array[BPivot]);
+			if(BPivot == TPivot)
+				break;
+			
+			while(array[TPivot] >= array[BPivot] && TPivot != BPivot) {
+				BPivot++;
+				/*if(TPivot == BPivot)
+					break;*/
+			}
+			temp = array[TPivot];//swap top and bottom pivots
+			array[TPivot] = array[BPivot];
+			array[BPivot] = temp;	
+			//System.out.println("Bottom move: Top " + TPivot + ":" + array[TPivot] + " Bottom " + BPivot + ":" + array[BPivot]);
 			
 		}
+		//TPivot is equal to BPivot now.
+		//System.out.println(TPivot + " - " + BPivot);
+		//System.out.println(bottom + " + " + top);
+		if(BPivot - bottom >= 2) {//bottom small
+			quickSort(array, bottom, TPivot - 1);
+		}
+		if(top - TPivot >= 2) {//top small
+			quickSort(array, BPivot + 1, top);
+
+		}
 		
-	}*/
+	}
 	
 	public static void main(String[] args) {
 		
@@ -377,6 +374,7 @@ public class SortingEngine {
 			System.out.println("10: Insertion Sort");
 			System.out.println("11: Radix Sort");
 			System.out.println("12: Merge Sort");
+			System.out.println("13: Quick Sort");
 			int choice = input.nextInt();
 			
 			if(choice == 0) {
@@ -408,7 +406,9 @@ public class SortingEngine {
 			}else if(choice == 11) {
 				array = radixSort(array);
 			}else if(choice == 12) {
-				array = mergeSort(array, 0, 99);
+				array = mergeSort(array, 0, (array.length - 1));
+			}else if(choice == 13) {
+				quickSort(array, 0, (array.length - 1));
 			}
 			
 		}		
